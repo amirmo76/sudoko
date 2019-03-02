@@ -1,6 +1,6 @@
 class Node:
     parent_node = None
-    state = [[0 for i in range(3)] for j in range(3)]
+    state = None
     depth = 0
     priority = 0  # the higher the better
 
@@ -31,22 +31,22 @@ class Node:
     def is_goal(self):
         for row in self.state:
             for num in row:
-                if not abs(row.count(num)) == 1 or num == 0:
+                if not row.count(num) + row.count(-num) == 1 or num == 0:
                     return False
         for column in self.get_columns():
             for num in column:
-                if not abs(column.count(num)) == 1 or num == 0:
+                if not column.count(num) + column.count(-num) == 1 or num == 0:
                     return False
         return True
 
     def is_valid(self):
         for row in self.state:
             for num in row:
-                if not abs(row.count(num)) == 1 and not num == 0:
+                if not row.count(num) + row.count(-num) == 1 and not num == 0:
                     return False
         for column in self.get_columns():
             for num in column:
-                if not abs(column.count(num)) == 1 and not num == 0:
+                if not column.count(num) + column.count(-num) == 1 and not num == 0:
                     return False
         return True
 
@@ -55,7 +55,3 @@ class Node:
 
     def __repr__(self):
         return self.__str__()
-
-
-n1 = Node([[1, 2, 3], [0, -5, 6], [7, -8, -9]])
-print(n1.is_valid())
