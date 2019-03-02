@@ -17,7 +17,7 @@ def successor(node: Node):
             break
     # now lets try all the possible outcomes and add the valid ones
     for num in range(size):
-        new_node = Node(deepcopy(node.state))
+        new_node = Node(deepcopy(node.state), deepcopy(node.area))
         new_node.state[index[0]][index[1]] = num + 1
         # new_node.state[index[0]][index[1]] = randint(1, size)
         if new_node.is_valid():

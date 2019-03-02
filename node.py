@@ -4,8 +4,9 @@ class Node:
     depth = 0
     priority = 0  # the higher the better
 
-    def __init__(self, state):
+    def __init__(self, state, area: tuple = None):
         self.state = state
+        self.area = area
 
     def get_columns(self):
         new_state = []
@@ -28,6 +29,30 @@ class Node:
     def is_equal_state(self, state) -> bool:
         return True if len(self.diff_state(state)) == len(self.state) else False
 
+    def is_area_valid(self, *state):
+        new_state = []
+        for row in state:
+            for num in row:
+                new_state.append(num)
+        for num in new_state:
+            if not new_state.count(num) + new_state.count(-num) == 1 and not num == 0:
+                return False
+        return True
+
+    def are_areas_valid(self):
+        number_of_areas = len(self.state)**2 // (self.area[0] * self.area[1])
+        for i in range(number_of_areas):
+            state = []
+            for k in range(self.area[1]):
+                row = []
+                for j in range(self.area[0]):
+                    row.append(self.state[k + i // self.area[1] * self.area[1]]
+                               [j + (i % self.area[0]) * self.area[0]])
+                state.append(row)
+            if not self.is_area_valid(*state):
+                return False
+        return True
+
     def is_goal(self):
         for row in self.state:
             for num in row:
@@ -37,6 +62,9 @@ class Node:
             for num in column:
                 if not column.count(num) + column.count(-num) == 1 or num == 0:
                     return False
+        if self.area:
+            if not self.are_areas_valid():
+                return False
         return True
 
     def is_valid(self):
@@ -48,6 +76,9 @@ class Node:
             for num in column:
                 if not column.count(num) + column.count(-num) == 1 and not num == 0:
                     return False
+        if self.area:
+            if not self.are_areas_valid():
+                return False
         return True
 
     def __str__(self):
